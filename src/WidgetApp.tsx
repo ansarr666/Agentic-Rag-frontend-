@@ -244,7 +244,7 @@ export default function WidgetApp() {
         ...current,
         message(
           'assistant',
-          `🎉 Thank you, ${leadName || 'there'}! Your discovery call request has been confirmed. A confirmation email has been dispatched to your inbox, and our engineering team will reach out to you at ${cleanPhone} shortly.`
+          `🎉 Thank you, ${leadName || 'there'}! Your discovery call request has been confirmed. Our engineering team will reach out to you at ${cleanPhone} shortly.`
         ),
       ]);
     } catch (err) {
