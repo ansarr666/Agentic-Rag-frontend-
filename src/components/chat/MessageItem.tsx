@@ -343,7 +343,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     <div className="p-2.5 grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {internalDocs.map((doc, idx) => (
                         <div
-                          key={doc.document_id || idx}
+                          key={`${doc.document_id || doc.title}-${idx}`}
                           onClick={() => handleSourceClick(doc)}
                           className="p-2.5 rounded-lg bg-surface hover:bg-surface-elevated border border-border hover:border-blue-500/50 cursor-pointer transition-all text-xs space-y-1 group"
                         >
@@ -393,7 +393,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     <div className="p-2.5 grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {driveDocs.map((doc, idx) => (
                         <div
-                          key={doc.document_id || idx}
+                          key={`${doc.document_id || doc.title}-${idx}`}
                           onClick={() => handleSourceClick(doc)}
                           className="p-2.5 rounded-lg bg-surface hover:bg-surface-elevated border border-emerald-900/40 hover:border-emerald-500/50 cursor-pointer transition-all text-xs space-y-1 group"
                         >
@@ -441,7 +441,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                     <div className="p-2.5 grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {webDocs.map((doc, idx) => (
                         <div
-                          key={doc.document_id || idx}
+                          key={`${doc.document_id || doc.title}-${idx}`}
                           onClick={() => handleSourceClick(doc)}
                           className="p-2.5 rounded-lg bg-surface hover:bg-surface-elevated border border-purple-900/40 hover:border-purple-500/50 cursor-pointer transition-all text-xs space-y-1.5 group"
                         >
