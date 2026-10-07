@@ -1,6 +1,6 @@
-import { Minus, RotateCcw, Sparkles } from 'lucide-react';
+import { RotateCcw, Sparkles } from 'lucide-react';
 
-export function ChatHeader({ onClose, onReset }: { onClose: () => void; onReset?: () => void }) {
+export function ChatHeader({ onReset }: { onReset?: () => void }) {
   return (
     <header className="os-chat-header">
       <div className="os-chat-header__identity">
@@ -23,9 +23,6 @@ export function ChatHeader({ onClose, onReset }: { onClose: () => void; onReset?
             <RotateCcw style={{ width: '15px', height: '15px' }} aria-hidden="true" />
           </button>
         )}
-        <button type="button" onClick={onClose} data-chat-close="true" className="os-icon-button" aria-label="Minimize chat">
-          <Minus aria-hidden="true" />
-        </button>
       </div>
     </header>
   );

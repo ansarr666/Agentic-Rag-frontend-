@@ -278,7 +278,7 @@ export default function WidgetApp() {
       {!isOpen && <ChatLauncher isOpen={false} showLabel={showLabel} onClick={() => setIsOpen(true)} />}
       {isOpen && (
         <section id="orionsoft-chat-window" className="os-chat-window" role="dialog" aria-labelledby="orionsoft-chat-title">
-          <ChatHeader onClose={closeChat} onReset={resetChat} />
+          <ChatHeader onReset={resetChat} />
           <main className="os-chat-messages" aria-live="polite" aria-busy={loading}>
             {phase === 'lead' ? (
               <LeadGate onSubmit={submitLead} />
