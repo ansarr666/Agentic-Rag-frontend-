@@ -81,6 +81,7 @@ export default function WidgetApp() {
   const [loading, setLoading] = useState(false);
   const [intent, setIntent] = useState<'normal' | 'high'>('normal');
   const [handoffDone, setHandoffDone] = useState(false);
+  const [calendarLinks, setCalendarLinks] = useState<{ google?: string; outlook?: string } | null>(null);
   const [retry, setRetry] = useState(false);
   const [lastFailedInput, setLastFailedInput] = useState('');
   const [pendingExpert, setPendingExpert] = useState(false);
@@ -237,6 +238,9 @@ export default function WidgetApp() {
       if (!response.ok || data.success === false) {
         throw new Error(data.error || 'Failed to submit booking request.');
       }
+      if (data.calendar_links) {
+        setCalendarLinks(data.calendar_links);
+      }
       setHandoffDone(true);
       setBookingOpen(false);
       setIntent('normal');
@@ -270,6 +274,7 @@ export default function WidgetApp() {
     setSuggestions([]);
     setIntent('normal');
     setHandoffDone(false);
+    setCalendarLinks(null);
     setBookingOpen(false);
   };
 
@@ -285,6 +290,36 @@ export default function WidgetApp() {
             ) : (
               <>
                 {messages.map((item) => <MessageBubble key={item.id} message={item} />)}
+                {handoffDone && calendarLinks?.google && (
+                  <div style={{ margin: '8px 0 12px 37px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <a
+                      href={calendarLinks.google}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="os-cta"
+                      style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      📅 Add to Google Calendar
+                    </a>
+                    {calendarLinks.outlook && (
+                      <a
+                        href={calendarLinks.outlook}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="os-cta"
+                        style={{
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          background: '#0284c7',
+                        }}
+                      >
+                        📅 Add to Outlook
+                      </a>
+                    )}
+                  </div>
+                )}
                 {loading && <TypingIndicator />}
                 {!loading && intent === 'high' && !handoffDone && !bookingOpen && (
                   <button type="button" className="os-cta" onClick={() => setBookingOpen(true)}>
