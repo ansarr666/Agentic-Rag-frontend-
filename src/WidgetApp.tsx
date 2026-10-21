@@ -1,3 +1,4 @@
+import { PhoneCall } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ChatHeader } from './components/widget/ChatHeader';
 import { ChatInput } from './components/widget/ChatInput';
@@ -248,7 +249,7 @@ export default function WidgetApp() {
         ...current,
         message(
           'assistant',
-          `🎉 Thank you, ${leadName || 'there'}! Your discovery call request has been confirmed. A confirmation email has been dispatched to your inbox, and our engineering team will reach out to you at ${cleanPhone} shortly.`
+          `🎉 Thank you, ${leadName || 'there'}! Your discovery call request has been confirmed. Our engineering team will reach out to you at ${cleanPhone} shortly.`
         ),
       ]);
     } catch (err) {
@@ -283,7 +284,7 @@ export default function WidgetApp() {
       {!isOpen && <ChatLauncher isOpen={false} showLabel={showLabel} onClick={() => setIsOpen(true)} />}
       {isOpen && (
         <section id="orionsoft-chat-window" className="os-chat-window" role="dialog" aria-labelledby="orionsoft-chat-title">
-          <ChatHeader onClose={closeChat} onReset={resetChat} />
+          <ChatHeader onReset={resetChat} />
           <main className="os-chat-messages" aria-live="polite" aria-busy={loading}>
             {phase === 'lead' ? (
               <LeadGate onSubmit={submitLead} />
@@ -299,7 +300,7 @@ export default function WidgetApp() {
                       className="os-cta"
                       style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                     >
-                      📅 Add to Google Calendar
+                      Add to Google Calendar
                     </a>
                     {calendarLinks.outlook && (
                       <a
@@ -315,7 +316,7 @@ export default function WidgetApp() {
                           background: '#0284c7',
                         }}
                       >
-                        📅 Add to Outlook
+                        Add to Outlook
                       </a>
                     )}
                   </div>
@@ -327,55 +328,40 @@ export default function WidgetApp() {
                   </button>
                 )}
                 {!loading && bookingOpen && !handoffDone && (
-                  <div className="os-solution-card" style={{ margin: '8px 0 8px 37px' }}>
+                  <div className="os-solution-card os-booking-card">
                     <div className="os-solution-card__eyebrow">
                       <span>📅 Book a Discovery Call</span>
                     </div>
-                    <h2 style={{ fontSize: '14px', margin: '6px 0 2px' }}>Schedule a Consultation</h2>
-                    <p style={{ fontSize: '12px', color: '#64748b', marginBottom: '8px' }}>
+                    <h2>Schedule a Consultation</h2>
+                    <p>
                       Enter your phone number so our specialist can call you:
                     </p>
-                    <form onSubmit={confirmBooking} style={{ display: 'grid', gap: '8px' }}>
+                    <form className="os-booking-form" onSubmit={confirmBooking}>
                       <input
                         type="tel"
                         required
                         autoFocus
+                        aria-label="Phone number for the call"
                         placeholder="+1 555 123 4567"
                         value={bookingPhone}
                         onChange={(e) => setBookingPhone(e.target.value)}
-                        style={{
-                          width: '100%',
-                          padding: '9px 11px',
-                          border: '1px solid #cbd5e1',
-                          borderRadius: '8px',
-                          fontSize: '13px',
-                          boxSizing: 'border-box',
-                        }}
                       />
                       {bookingError && (
-                        <p style={{ color: '#dc2626', fontSize: '11px', margin: 0 }}>{bookingError}</p>
+                        <p className="os-booking-form__error" role="alert">{bookingError}</p>
                       )}
-                      <div style={{ display: 'flex', gap: '8px' }}>
+                      <div className="os-booking-form__actions">
                         <button
                           type="submit"
                           disabled={bookingSubmitting}
-                          className="os-lead-submit"
-                          style={{ flex: 1, minHeight: '36px', fontSize: '12px' }}
+                          className="os-booking-form__submit"
                         >
-                          {bookingSubmitting ? 'Confirming...' : 'Confirm Call Request'}
+                          <PhoneCall aria-hidden="true" />
+                          {bookingSubmitting ? 'Sending request...' : 'Request a call'}
                         </button>
                         <button
                           type="button"
                           onClick={() => { setBookingOpen(false); setBookingError(''); }}
-                          style={{
-                            background: '#f1f5f9',
-                            color: '#475569',
-                            border: '1px solid #e2e8f0',
-                            borderRadius: '8px',
-                            padding: '0 12px',
-                            fontSize: '12px',
-                            cursor: 'pointer',
-                          }}
+                          className="os-booking-form__cancel"
                         >
                           Cancel
                         </button>

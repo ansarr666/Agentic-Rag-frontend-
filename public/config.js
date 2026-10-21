@@ -1,1 +1,1 @@
-window.__RAG_CONFIG__ = { backendUrl: 'http://localhost:5000' };
+window.__RAG_CONFIG__ = { backendUrl: '' };

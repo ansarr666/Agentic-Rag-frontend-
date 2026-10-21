@@ -30,18 +30,31 @@ export function LeadGate({ onSubmit }: Props) {
     return null;
   })();
 
+const DISPOSABLE_EMAIL_DOMAINS = new Set([
+  'mailinator.com', 'tempmail.com', 'guerrillamail.com', '10minutemail.com',
+  'sharklasers.com', 'yopmail.com', 'trashmail.com', 'getairmail.com',
+  'dispostable.com', 'mytemp.email', 'throwawaymail.com', 'fakeinbox.com',
+  'temp-mail.org', 'mohmal.com', 'generator.email', 'emailondeck.com',
+  'inboxkitten.com', 'crazymailing.com', 'burnermail.io', 'trashmail.net'
+]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (!/^\S+@\S+\.\S+$/.test(lead.email)) {
-      return setError('Please enter a valid email address.');
+    const email = lead.email.trim().toLowerCase();
+    if (!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email)) {
+      return setError('Please enter a valid email address (e.g. name@company.com).');
+    }
+    const domain = email.split('@')[1];
+    if (domain && DISPOSABLE_EMAIL_DOMAINS.has(domain)) {
+      return setError('Temporary or disposable email addresses are not accepted.');
     }
     if (!/^\d{10}$/.test(lead.phone)) {
       return setError('Please enter a 10-digit phone number.');
     }
     setSubmitting(true);
     try {
-      await onSubmit({ ...lead, email: lead.email.trim(), name: lead.name.trim() });
+      await onSubmit({ ...lead, email, name: lead.name.trim() });
     } catch (err) {
       const msg = err instanceof Error ? err.message : '';
       setError(msg || 'Something went wrong. Please try again.');
